@@ -66,16 +66,31 @@
 			</div>
 
 			<ul class="start col-md-offset-4">
-				<li><a href="#"><i></i></a></li>
 				<%
-					for (int i = 0; i < total / Constant.NUMBER_PRODUCT_PER_PAGE; i++) {
+					if (pageno != 1) {
 				%>
-				<li class="arrow"><a
-					href="products.jsp?sub_category=<%=sub_category_id%>&sub_category_name=<%=sub_category_name%>&page=<%=i+1%>"><%=i+1 %></a></li>
+				<li><a
+					href="products.jsp?sub_category=<%=sub_category_id%>&sub_category_name=<%=sub_category_name%>&page=<%=pageno - 1%>"><i></i></a></li>
 				<%
 					}
 				%>
-				<li><a href="#"><i class="next"> </i></a></li>
+				<%
+					for (int i = 0; i <= total / Constant.NUMBER_PRODUCT_PER_PAGE; i++) {
+				%>
+				<li class="arrow"><a
+					href="products.jsp?sub_category=<%=sub_category_id%>&sub_category_name=<%=sub_category_name%>&page=<%=i + 1%>"><%=i + 1%></a></li>
+				<%
+					}
+				%>
+				<%
+					if (pageno != (total / Constant.NUMBER_PRODUCT_PER_PAGE + 1)) {
+				%>
+				<li><a
+					href="products.jsp?sub_category=<%=sub_category_id%>&sub_category_name=<%=sub_category_name%>&page=<%=pageno + 1%>"><i
+						class="next"> </i></a></li>
+				<%
+					}
+				%>
 			</ul>
 
 		</div>
