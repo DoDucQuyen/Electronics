@@ -208,7 +208,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<%
 							for (Category category : categoryDao.getListCategory()) {
 						%>
-						<li><a href="#"><%=category.getName()%></a>
+						<li><%=category.getName()%>
 							<ul class="drop">
 								<%
 									ArrayList<SubCategory> listSubCategory = (ArrayList) categoryMap.get(category.getId());
@@ -217,7 +217,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 											for (SubCategory subcategory : listSubCategory) {
 								%>
 								<li><a
-									href="products.jsp?sub_category=<%=subcategory.getId()%>&sub_category_name=<%=subcategory.getName()%>"><%=subcategory.getName()%></a></li>
+									href="products.jsp?sub_category=<%=subcategory.getId()%>&sub_category_name=<%=subcategory.getName()%>&page=1"><%=subcategory.getName()%></a></li>
 								<%
 									}
 										}

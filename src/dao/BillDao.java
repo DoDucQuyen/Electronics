@@ -9,7 +9,7 @@ import entities.Cart;
 
 public class BillDao extends DbManager{
 	public void insertBill(Bill bill) {
-		String sql = "insert into bill (cart_detail, address, phone, account_id) values(?, N?, ?, ?)";
+		String sql = "insert into bill (cart_detail, address, phone, account_id, checked) values(?, N?, ?, ? , ?)";
 		PreparedStatement pstm;
 		
 		openConnection();
@@ -21,6 +21,7 @@ public class BillDao extends DbManager{
 				pstm.setString(++index, bill.getAddress());
 				pstm.setString(++index, bill.getPhone());
 				pstm.setInt(++index, bill.getAccountId());
+				pstm.setInt(++index, 0);
 				pstm.executeUpdate();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -33,7 +34,7 @@ public class BillDao extends DbManager{
 		BillDao dao = new BillDao();
 		Bill bill = new Bill();
 		bill.setCart(new Cart());
-		bill.setAddress("nam cao");
+		bill.setAddress("Kiến Xương");
 		bill.setPhone("092812391");
 		bill.setAccountId(1);
 		dao.insertBill(bill);

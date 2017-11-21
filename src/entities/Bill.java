@@ -6,8 +6,10 @@ public class Bill {
 	private String phone;
 	private String timeStamp;
 	private int accountId;
+	private int checked;
 	public Bill() {
 		super();
+		checked = 0;
 	}
 	public Cart getCart() {
 		return cart;
@@ -39,5 +41,10 @@ public class Bill {
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
-	
+	public int getChecked() {
+		return checked;
+	}
+	public void setChecked(int checked) {
+		this.checked = checked;
+	}
 }

@@ -1,3 +1,4 @@
+<%@page import="ultils.Constant"%>
 <%@page import="entities.Product"%>
 <%@page import="dao.ProductDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -11,6 +12,8 @@
 <body>
 	<%
 		ProductDao productDao = new ProductDao();
+		int total = 0;
+		int pageno = 1;
 		String sub_category_id = "";
 		String sub_category_name = "";
 		if (request.getParameter("sub_category") != null) {
@@ -21,43 +24,59 @@
 			sub_category_name = request.getParameter("sub_category_name");
 
 		}
+		if (request.getParameter("page") != null) {
+			pageno = Integer.parseInt(request.getParameter("page"));
+		}
+		total = productDao.countTotal(Integer.parseInt(sub_category_id));
 	%>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="container">
 		<div class="products">
-			<h2 class=" products-in"><%=sub_category_name %></h2>
+			<h2 class=" products-in"><%=sub_category_name%></h2>
 			<div class=" top-products">
 				<%
-					for(Product product : productDao.getListProductBySubCategoryId(Integer.parseInt(sub_category_id))){			
+					for (Product product : productDao.getListProduct(Integer.parseInt(sub_category_id),
+							(pageno - 1) * Constant.NUMBER_PRODUCT_PER_PAGE, Constant.NUMBER_PRODUCT_PER_PAGE)) {
 				%>
 				<div class="col-md-3 md-col">
 					<div class="col-md">
-						<a href="single.jsp?product_id=<%=product.getId() %>" class="compare-in"><img
-							src="images/pic3.jpg" alt="" />
-							</a>
+						<a href="single.jsp?product_id=<%=product.getId()%>"
+							class="compare-in"><img src="images/pic3.jpg" alt="" /> </a>
 						<div class="top-content">
 							<h5>
-								<a href="single.jsp?product_id=<%=product.getId() %>"><%=product.getName() %></a>
+								<a href="single.jsp?product_id=<%=product.getId()%>"><%=product.getName()%></a>
 							</h5>
 							<div class="white">
-								<a href="CartController?command=addToCart&product_id=<%=product.getId() %>"
+								<a
+									href="CartController?command=addToCart&product_id=<%=product.getId()%>"
 									class="hvr-shutter-in-vertical hvr-shutter-in-vertical2">Mua</a>
 								<p class="dollar">
-									<span class="in-dollar">VND</span><span><%=product.getPrice() %></span>
+									<span class="in-dollar">VND</span><span><%=product.getPrice()%></span>
 								</p>
 								<div class="clearfix"></div>
 							</div>
 						</div>
 					</div>
 				</div>
-				
+
 				<%
 					}
 				%>
 				<div class="clearfix"></div>
 			</div>
 
-
+			<ul class="start col-md-offset-4">
+				<li><a href="#"><i></i></a></li>
+				<%
+					for (int i = 0; i < total / Constant.NUMBER_PRODUCT_PER_PAGE; i++) {
+				%>
+				<li class="arrow"><a
+					href="products.jsp?sub_category=<%=sub_category_id%>&sub_category_name=<%=sub_category_name%>&page=<%=i+1%>"><%=i+1 %></a></li>
+				<%
+					}
+				%>
+				<li><a href="#"><i class="next"> </i></a></li>
+			</ul>
 
 		</div>
 	</div>

@@ -124,36 +124,70 @@ public class ProductDao extends DbManager {
 		}
 		return product;
 	}
-	public void initProduct(int numberProduct) {
-		String sql = "insert into product(name,description,price,image,quantity,sub_category_id) values( ?, ?, ?, ?, ?, ?) ";
+	
+	public ArrayList<Product> getListProduct(int subCategoryId, int first, int max) {
+		ArrayList<Product> listProduct = null;
+		String sql = "select * from product where sub_category_id = ? limit ?,?";
+		PreparedStatement pstm;
+		ResultSet rs;
+		Product product;
 		openConnection();
-		try {
-			PreparedStatement pstm;
-			String sqlTruncate = "truncate table product";
-			pstm = connection.prepareStatement(sqlTruncate);
-			pstm.executeUpdate();
-			pstm.clearBatch();
-			for (int i = 0; i < numberProduct; i++) {
+		if (connection != null) {
+			try {
+				listProduct = new ArrayList<>();
 				pstm = connection.prepareStatement(sql);
-				int j = 0;
-				pstm.setString(++j, "Sản Phẩm " + i);
-				pstm.setString(++j, "Mô tả sản phẩm");
-				pstm.setInt(++j, 100000);
-				pstm.setString(++j, "img.jpg");
-				pstm.setInt(++j, 10);
-				pstm.setInt(++j, i % 5 + 1);
-				pstm.executeUpdate();
+				pstm.setInt(1, subCategoryId);
+				pstm.setInt(2, first);
+				pstm.setInt(3, max);
+				rs = pstm.executeQuery();
+				while (rs.next()) {
+					product = new Product();
+					product.setId(rs.getInt("id"));
+					product.setName(rs.getString("name"));
+					product.setDescription(rs.getString("description"));
+					product.setImage(rs.getString("image"));
+					product.setPrice(rs.getInt("price"));
+					product.setQuantity(rs.getInt("quantity"));
+					product.setSubCategoryId(rs.getInt("sub_category_id"));
+					listProduct.add(product);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		return listProduct;
 	}
-
+	public int countTotal(int subCategoryId) {
+		int count = 0;
+		String sql = "select * from product where sub_category_id = ?";
+		PreparedStatement pstm;
+		ResultSet rs;
+		openConnection();
+		if (connection != null) {
+			try {
+				pstm = connection.prepareStatement(sql);
+				pstm.setInt(1, subCategoryId);
+				rs = pstm.executeQuery();
+				while (rs.next()) {
+					count++;
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
 	public static void main(String[] args) {
 		ProductDao dao = new ProductDao();
-		dao.getAllProductMap();
+//		dao.getAllProductMap();
 		// HashMap map = dao.getProductMap();
 		// System.out.print(map.get(new Integer(3)));
+		System.out.println(dao.countTotal(1));
+		ArrayList<Product> listProduct = dao.getListProduct(1, 4, 10);
+		for(Product product : listProduct) {
+			System.out.println(product.getId() + "-" + product.getName());
+		}
 	}
 }
