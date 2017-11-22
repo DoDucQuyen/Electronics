@@ -76,7 +76,12 @@ public class AccountController extends HttpServlet {
 			account = accountDao.checkAccount(request.getParameter("username"), request.getParameter("password"));
 			if(account != null){
 				session.setAttribute("account", account);
-				url = "/index.jsp";
+				if(account.getRole() == 1){
+					response.sendRedirect("admin/index.jsp");
+				}
+				else {
+					url = "/index.jsp";
+				}
 			} else {
 				request.setAttribute("error", "Tên tài khoản hoặc mật khẩu không hợp lệ. Xin vui lòng nhập lại.");
 				url = "/login.jsp";
@@ -87,8 +92,8 @@ public class AccountController extends HttpServlet {
 			break;
 		}
 		
-		RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-		rd.forward(request, response);
+//		RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+//		rd.forward(request, response);
 	}
 
 }

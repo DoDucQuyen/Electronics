@@ -75,7 +75,7 @@ public class AccountDao extends DbManager{
 					account.setUsername(rs.getString("username"));
 					account.setAddress(rs.getString("address"));
 					account.setPhone(rs.getString("phone"));
-					
+					account.setRole(rs.getInt("role"));
 					return account;
 				}
 			} catch (SQLException e) {
@@ -106,6 +106,7 @@ public class AccountDao extends DbManager{
 					account.setUsername(rs.getString("username"));
 					account.setAddress(rs.getString("address"));
 					account.setPhone(rs.getString("phone"));
+					account.setRole(rs.getInt("role"));
 					
 					return account;
 				}
